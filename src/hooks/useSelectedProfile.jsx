@@ -4,7 +4,6 @@ const SelectedProfileContext = createContext();
 
 export function SelectedProfileProvider({ children }) {
     const [selectedProfile, setSelectedProfile] = useState(null);
-    console.log("selectedProfile", selectedProfile)
 
     return (
         <SelectedProfileContext.Provider value={{ selectedProfile, setSelectedProfile }}>

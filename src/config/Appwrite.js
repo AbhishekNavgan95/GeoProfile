@@ -81,7 +81,6 @@ export const deleteUser = async (doc = {}) => {
 };
 
 export const getUsers = async (filters) => {
-  console.log("filters : ", filters);
   try {
     const query = [];
 
