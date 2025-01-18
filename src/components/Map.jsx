@@ -40,7 +40,7 @@ const RenderMap = () => {
                 <FaArrowLeft /> Back
             </Button>
             <APIProvider
-                apiKey={import.meta.env.VITE_MAP_API_KEY}
+                apiKey={import.meta.env.VITE_MAP_API}
             >
                 <div className="rounded-lg overflow-hidden h-full w-full">
                     <Map
