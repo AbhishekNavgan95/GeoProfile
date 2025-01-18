@@ -23,7 +23,7 @@ const UserList = () => {
                 setCurrentUser(response?.documents[0])
             }
 
-            setLoading(false)
+            setLoading(false) 
         }
 
         fetchUsers();
