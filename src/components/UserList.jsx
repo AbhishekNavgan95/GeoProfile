@@ -15,7 +15,7 @@ const UserList = ({ users, loading }) => {
                             <div>No data found</div>
                         )
                         : (
-                            <div className='flex flex-col gap-3 overflow-scroll h-full px-5 mt-3'>
+                            <div className='flex flex-col overflow-scroll h-full px-5 mt-3'>
                                 {
 
                                     users.map((user) => (

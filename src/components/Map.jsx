@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     APIProvider,
     Map,
@@ -6,10 +6,13 @@ import {
     Pin,
     InfoWindow,
 } from "@vis.gl/react-google-maps";
-import { useSearchParams } from "react-router-dom";
+import { useCurrentUser } from "@/stores/currentUserStore";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 const RenderMap = () => {
-    const [searchParams] = useSearchParams();
+    const { currentUser } = useCurrentUser();
+
     const [markerPosition, setMarkerPosition] = useState({
         lat: 28.7041,
         lng: 77.1025092,
@@ -20,12 +23,9 @@ const RenderMap = () => {
     })
 
     useEffect(() => {
-        const lat = Number(searchParams.get("lat")) || 28.7041;
-        const lng = Number(searchParams.get("lng")) || 77.1025092;
-        const newPosition = { lat, lng };
-        setMarkerPosition(newPosition);
-        setCenter(newPosition)
-    }, [searchParams]);
+        setMarkerPosition({ lat: Number(currentUser?.lat), lng: Number(currentUser?.lng) })
+        setCenter({ lat: Number(currentUser?.lat), lng: Number(currentUser?.lng) })
+    }, [currentUser])
 
     const handleCenterChange = (e) => {
         setCenter(e?.details?.center)
@@ -46,7 +46,7 @@ const RenderMap = () => {
                         mapId={import.meta.env.VITE_MAP_ID}
                     >
                         <InfoWindow position={markerPosition}>
-                            The content of the info window is here.
+                            <UserMarkerCard user={currentUser} />
                         </InfoWindow>
                         {/* <Marker doc={markerPosition} /> */}
                     </Map>
@@ -55,6 +55,22 @@ const RenderMap = () => {
         </section>
     );
 };
+
+const UserMarkerCard = ({ user }) => {
+    const navigate = useNavigate();
+    return (
+        <div className="flex flex-col gap-2">
+            <span className="flex items-center gap-3">
+                <img src={user?.image || 'User'} className="rounded-full overflow-hidden object-cover w-7 " alt="" />
+                <span>
+                    <h3 className="font-semibold text-xs">{user?.name}</h3>
+                    <p className="text-black-600 text-xs">{user?.email}</p>
+                </span>
+            </span>
+            <Button onClick={() => navigate(`/user/${user?.$id}`)} size='sm'>View details</Button>
+        </div>
+    )
+}
 
 const Marker = ({ doc }) => {
     const [position, setPosition] = useState({ lat: 0, lng: 0 });

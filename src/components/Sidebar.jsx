@@ -4,24 +4,14 @@ import { RiAdminLine } from "react-icons/ri";
 import { Input } from './ui/input';
 import UserList from './UserList';
 import { getUsers } from '@/config/Appwrite';
+import { useUserStore } from '@/stores/userStore';
+import { useloadingStore } from '@/stores/loadingStore';
 
 
 const Sidebar = () => {
 
-  const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true)
-      const response = await getUsers();
-      setUsers(response?.documents);
-      setLoading(false)
-    }
-
-    fetchUsers();
-  }, [])
-
+  const { users } = useUserStore()
+  const { loading } = useloadingStore();
 
   return (
     <section className='h-screen text-white-300 py-5'>
