@@ -1,10 +1,24 @@
 import React from 'react'
 import { Button } from './ui/button'
 import { useCurrentUser } from '@/stores/currentUserStore';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileCard = ({ user }) => {
 
     const { setCurrentUser, currentUser } = useCurrentUser();
+    const navigate = useNavigate();
+
+    const getWindowWidth = () => {
+        const windowWidth = window.innerWidth;
+        return windowWidth
+    }
+
+    const handleCurrentUserChange = () => {
+        if (getWindowWidth() < 800) {
+            navigate(`/user/${user?.$id}/map`)
+        }
+        setCurrentUser(user)
+    }
 
     return (
         <div className={`py-2 rounded-lg px-3 cursor-pointer flex justify-between items-center min-w-[300px] ${currentUser?.$id === user?.$id ? "bg-white-800" : ""}`}>
@@ -18,7 +32,7 @@ const ProfileCard = ({ user }) => {
                 </span>
             </span>
             <span>
-                <Button onClick={() => setCurrentUser(user)} className='' size='sm'>Summary</Button>
+                <Button onClick={handleCurrentUserChange} className='' size='sm'>Summary</Button>
             </span>
         </div>
     )

@@ -9,9 +9,12 @@ import {
 import { useCurrentUser } from "@/stores/currentUserStore";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+
 
 const RenderMap = () => {
     const { currentUser } = useCurrentUser();
+    const navigate = useNavigate();
 
     const [markerPosition, setMarkerPosition] = useState({
         lat: 28.7041,
@@ -32,10 +35,12 @@ const RenderMap = () => {
     }
 
     return (
-        <section className="h-screen p-2 w-full">
+        <section className="h-screen relative p-2 w-full">
+            <Button onClick={() => navigate(-1)} size='default' className="absolute bottom-0 left-0 z-[2] m-5 md:hidden">
+                <FaArrowLeft /> Back
+            </Button>
             <APIProvider
                 apiKey={import.meta.env.VITE_MAP_API_KEY}
-                onLoad={() => console.log("Maps API has loaded.")}
             >
                 <div className="rounded-lg overflow-hidden h-full w-full">
                     <Map
