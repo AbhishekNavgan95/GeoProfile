@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { getUser } from "@/config/Appwrite";
 import { useloadingStore } from "@/stores/loadingStore";
+import { IoIosArrowForward } from "react-icons/io";
 import Spinner from "./Spinner";
 
 const RenderMap = () => {
@@ -32,7 +33,6 @@ const RenderMap = () => {
             setLoading(true)
             const response = await getUser(id)
             setUser(response);
-            console.log("response, ", response)
         }
         setLoading(false)
     }
@@ -96,13 +96,13 @@ const UserMarkerCard = ({ user }) => {
     return (
         <div className="flex flex-col gap-2">
             <span className="flex items-center gap-3">
-                <img src={user?.image || 'User'} className="rounded-full overflow-hidden object-cover w-7 " alt="" />
+                <img loading='lazy' src={user?.image || 'User'} className="rounded-full overflow-hidden object-cover w-7 " alt="" />
                 <span>
                     <h3 className="font-semibold text-xs">{user?.name}</h3>
                     <p className="text-black-600 text-xs">{user?.email}</p>
                 </span>
             </span>
-            <Button onClick={() => navigate(`/user/${user?.$id}`)} size='sm'>View details</Button>
+            <Button className='flex gap-1 hover:gap-3 transition-all duration-200' onClick={() => navigate(`/user/${user?.$id}`)} size='sm'>View details <IoIosArrowForward /></Button>
         </div>
     )
 }

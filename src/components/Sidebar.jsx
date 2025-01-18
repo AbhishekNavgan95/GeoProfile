@@ -64,7 +64,7 @@ const Sidebar = () => {
       <nav className='flex justify-between items-center px-5  min-w-[350px]'>
         {/* logo */}
         <span className='flex items-center justify-center gap-2'>
-          <img className='max-w-[35px] rounded-full' src={logo} alt="" />
+          <img loading='lazy' className='max-w-[35px] rounded-full' src={logo} alt="" />
           <h1 className='font-semibold text-4xl'>GeoProfile</h1>
         </span>
 

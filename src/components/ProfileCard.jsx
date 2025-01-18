@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from './ui/button'
 import { useCurrentUser } from '@/stores/currentUserStore';
 import { useNavigate } from 'react-router-dom';
+import { IoIosArrowForward } from "react-icons/io";
 
 const ProfileCard = ({ user }) => {
 
@@ -32,7 +33,7 @@ const ProfileCard = ({ user }) => {
                 </span>
             </span>
             <span>
-                <Button onClick={handleCurrentUserChange} className='' size='sm'>Summary</Button>
+                <Button onClick={handleCurrentUserChange} className='flex gap-1 hover:gap-3 transition-all duration-200' size='sm'>Summary <IoIosArrowForward /></Button>
             </span>
         </div>
     )
