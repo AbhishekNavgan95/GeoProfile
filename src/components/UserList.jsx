@@ -5,6 +5,7 @@ import { getUsers } from '@/config/Appwrite';
 import { useSearchParams } from 'react-router-dom';
 import { useloadingStore } from '@/stores/loadingStore';
 import { useUserStore } from '@/stores/userStore';
+import Spinner from './Spinner';
 
 const UserList = () => {
 
@@ -34,7 +35,7 @@ const UserList = () => {
             {
                 loading && users?.length <= 0
                     ? (
-                        <div className='my-24 grid place-items-center'>Loading...</div>
+                        <div className='my-24 grid place-items-center'><Spinner /></div>
                     )
                     : (!loading && users?.length <= 0)
                         ? (

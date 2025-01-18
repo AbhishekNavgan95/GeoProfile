@@ -113,10 +113,12 @@ export const getUsers = async (filters) => {
 
 export const getUser = async (id) => {
   try {
+    if(!id) return null;
+    
     const response = await databases.getDocument(
-      import.meta.env.VITE_DATABASE_ID, // Database ID
-      import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
-      id // Document ID
+      import.meta.env.VITE_DATABASE_ID, 
+      import.meta.env.VITE_USER_COLLECTION_ID, 
+      id 
     );
     console.log("Document fetched:", response);
     return response;

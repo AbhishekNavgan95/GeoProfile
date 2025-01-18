@@ -22,7 +22,7 @@ const Home = () => {
 
         <ResizableHandle className='bg-black-500 hidden md:block' />
 
-        <ResizablePanel className='absolute md:static' defaultSize={60}>
+        <ResizablePanel className='hidden md:block' defaultSize={60}>
           <RenderMap />
         </ResizablePanel>
 

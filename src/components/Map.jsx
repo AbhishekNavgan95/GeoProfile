@@ -8,31 +8,61 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useCurrentUser } from "@/stores/currentUserStore";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-
+import { getUser } from "@/config/Appwrite";
+import { useloadingStore } from "@/stores/loadingStore";
+import Spinner from "./Spinner";
 
 const RenderMap = () => {
+    const defaultCoordinates = {
+        lat: 28.7041,
+        lng: 77.1025092,
+    }
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true);
+    const [markerPosition, setMarkerPosition] = useState(defaultCoordinates);
+    const [center, setCenter] = useState(defaultCoordinates)
     const { currentUser } = useCurrentUser();
     const navigate = useNavigate();
+    const { id } = useParams();
 
-    const [markerPosition, setMarkerPosition] = useState({
-        lat: 28.7041,
-        lng: 77.1025092,
-    });
-    const [center, setCenter] = useState({
-        lat: 28.7041,
-        lng: 77.1025092,
-    })
+    const fetchUser = async () => {
+        if (id) {
+            setLoading(true)
+            const response = await getUser(id)
+            setUser(response);
+            console.log("response, ", response)
+        }
+        setLoading(false)
+    }
 
     useEffect(() => {
-        setMarkerPosition({ lat: Number(currentUser?.lat), lng: Number(currentUser?.lng) })
-        setCenter({ lat: Number(currentUser?.lat), lng: Number(currentUser?.lng) })
-    }, [currentUser])
+        fetchUser();
+    }, [id])
+
+    useEffect(() => {
+        if (user) {
+            setMarkerPosition({ lat: Number(user?.lat), lng: Number(user?.lng) })
+            setCenter({ lat: Number(user?.lat), lng: Number(user?.lng) })
+        } else if(currentUser) {
+            setMarkerPosition({ lat: Number(currentUser?.lat), lng: Number(currentUser?.lng) })
+            setCenter({ lat: Number(currentUser?.lat), lng: Number(currentUser?.lng) })
+        }
+    }, [user, currentUser])
 
     const handleCenterChange = (e) => {
         setCenter(e?.details?.center)
     }
+
+    if (loading) {
+        return (
+            <div className="w-full h-screen bg-black-700 text-white-200 grid place-items-center">
+                <Spinner />
+            </div>
+        )
+    }
+
 
     return (
         <section className="h-screen relative p-2 w-full">
@@ -51,7 +81,7 @@ const RenderMap = () => {
                         mapId={import.meta.env.VITE_MAP_ID}
                     >
                         <InfoWindow position={markerPosition}>
-                            <UserMarkerCard user={currentUser} />
+                            <UserMarkerCard user={user || currentUser} />
                         </InfoWindow>
                         {/* <Marker doc={markerPosition} /> */}
                     </Map>

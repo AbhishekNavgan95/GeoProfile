@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
 export const useloadingStore = create((set) => ({
-  loading: false,
+  loading: true,
   setLoading: (val) => set((state) => ({loading: val})),
 }));

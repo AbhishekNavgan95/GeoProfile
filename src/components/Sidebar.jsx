@@ -58,7 +58,7 @@ const Sidebar = () => {
   }, [debouncedText]);
 
   return (
-    <section className='h-screen text-white-300 py-5 flex flex-col'>
+    <section className='h-screen text-white-300 py-5 flex flex-col '>
 
       {/* nav */}
       <nav className='flex justify-between items-center px-5  min-w-[350px]'>

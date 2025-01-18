@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import RenderMap from "./components/Map";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import { SelectedProfileProvider } from "./hooks/useSelectedProfile";
 
 const App = () => {
 

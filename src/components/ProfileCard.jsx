@@ -21,7 +21,7 @@ const ProfileCard = ({ user }) => {
     }
 
     return (
-        <div className={`py-2 rounded-lg px-3 cursor-pointer flex justify-between items-center min-w-[300px] ${currentUser?.$id === user?.$id ? "bg-white-800" : ""}`}>
+        <div className={`py-2 rounded-lg px-3 cursor-pointer flex justify-between gap-1 items-center min-w-[300px] ${currentUser?.$id === user?.$id ? "bg-white-800" : ""}`}>
             <span className='flex gap-3'>
                 <img loading='lazy' className='rounded-full aspect-square object-cover border-2 border-white-200 h-12 w-12' src={user?.image} alt="" />
                 <span>
