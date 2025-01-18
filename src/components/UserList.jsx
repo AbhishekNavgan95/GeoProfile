@@ -32,11 +32,11 @@ const UserList = () => {
     return (
         <>
             {
-                loading && users.length <= 0
+                loading && users?.length <= 0
                     ? (
                         <div className='my-24 grid place-items-center'>Loading...</div>
                     )
-                    : (!loading && users.length <= 0)
+                    : (!loading && users?.length <= 0)
                         ? (
                             <div className='mt-24 grid place-items-center'>No data found</div>
                         )
