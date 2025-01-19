@@ -21,12 +21,11 @@ import {
 import { deleteUser } from "@/config/Appwrite"
 import { useloadingStore } from "@/stores/loadingStore"
 import { useloadingProgress } from "@/stores/loadingProgressStore"
+import { useNavigate } from "react-router-dom"
 
-const DataTable = ({ users = [], handleDeleteUser = () => {}, handleUserUpdate= () => {} }) => {
+const DataTable = ({ users = [], handleDeleteUser = () => { }}) => {
 
-    const { setLoadingProgress } = useloadingProgress()
-
-
+    const navigate = useNavigate();
 
     return (
         <div className="overflow-x-auto border border-black-600 rounded-lg">
@@ -59,6 +58,7 @@ const DataTable = ({ users = [], handleDeleteUser = () => {}, handleUserUpdate= 
                     {
                         users.map((user) => (
                             <tr key={user?.$id} className="odd:bg-white-900 border-b border-black-600">
+                                
                                 <td className="p-4 text-sm text-black ">
                                     <div className=' flex gap-2 items-center'>
                                         <img className='w-8 rounded-full' loading='lazy' src={user?.image} alt={user?.name} />
@@ -67,6 +67,7 @@ const DataTable = ({ users = [], handleDeleteUser = () => {}, handleUserUpdate= 
                                         }
                                     </div>
                                 </td>
+
                                 <td className="p-4 text-sm text-black ">
                                     <a className='hover:underline' href={`mailto:${user?.email}`}>
                                         {
@@ -74,6 +75,7 @@ const DataTable = ({ users = [], handleDeleteUser = () => {}, handleUserUpdate= 
                                         }
                                     </a>
                                 </td>
+
                                 <td className="p-4 text-sm text-black">
                                     <a className='hover:underline' href={`tel:${user?.phone}`}>
                                         {
@@ -81,23 +83,26 @@ const DataTable = ({ users = [], handleDeleteUser = () => {}, handleUserUpdate= 
                                         }
                                     </a>
                                 </td>
+
                                 <td className="p-4 text-sm text-black">
                                     <div className=''>
                                         {user?.city}, {user?.state}, {user?.country}
                                     </div>
                                 </td>
+
                                 <td className="p-4 text-sm text-black">
                                     <div className=''>
                                         {user?.interests}
                                     </div>
                                 </td>
+
                                 <td className="p-4 text-sm text-black">
                                     <DropdownMenu>
                                         <Button size='sm' className='h-6'>
                                             <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
                                         </Button>
                                         <DropdownMenuContent className='flex flex-col gap-2 p-2'>
-                                            <button onClick={() => handleUserUpdate(user)}>Update</button>
+                                            <button onClick={() => navigate('form')}>Update</button>
                                             <AlertDialog className='flex flex-col p-2'>
                                                 <AlertDialogTrigger>
                                                     Delete

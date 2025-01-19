@@ -12,9 +12,11 @@ import { Button } from '../../components/ui/button'; import {
 } from "@/components/ui/select"
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserForm = ({ selectedUser = null }) => {
     console.log("selectedUser : ", selectedUser)
+    const navigate = useNavigate();
 
     const {
         register,
@@ -48,6 +50,8 @@ const UserForm = ({ selectedUser = null }) => {
 
     return (
         <form className=' flex gap-y-5 flex-col' onSubmit={handleSubmit(submitHandler)}>
+
+            {/* name and email */}
             <div className='flex gap-y-3 gap-x-5'>
                 <span className='flex flex-col items-start w-full'>
                     <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="name">Name</label>
@@ -77,6 +81,7 @@ const UserForm = ({ selectedUser = null }) => {
                 </span>
             </div>
 
+            {/* contact and image */}
             <div className='flex gap-y-3 gap-x-5'>
                 <span className='flex flex-col items-start w-full'>
                     <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="phone">Contact Number</label>
@@ -107,6 +112,8 @@ const UserForm = ({ selectedUser = null }) => {
                 }
             </div>
 
+
+            {/* Description and Interests*/}
             <div className='flex gap-y-3 gap-x-5'>
                 <span className='flex flex-col items-start w-full'>
                     <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="phone">Description</label>
@@ -138,6 +145,7 @@ const UserForm = ({ selectedUser = null }) => {
                 </span>
             </div>
 
+            {/* longitude and latitude */}
             <div className='flex gap-y-3 gap-x-5'>
                 <span className='flex flex-col items-start w-full'>
                     <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="longitude">Longitude</label>
@@ -168,15 +176,16 @@ const UserForm = ({ selectedUser = null }) => {
                 </span>
             </div>
 
+            {/* select boxes */}
             <div className='flex flex-col md:flex-row gap-y-3 gap-x-5'>
-
-                <div className='flex  gap-y-3 gap-x-5 w-full'>
-
+                <div className='flex gap-y-3 gap-x-5 w-full'>
+                    {/* City Select */}
                     <span className='w-full'>
                         <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="city">City</label>
                         <Controller
                             name='city'
                             control={control}
+                            rules={{ required: 'City is required' }}
                             render={({ field }) => (
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <SelectTrigger className="w-full border-white-600 text-white-400">
@@ -192,16 +201,16 @@ const UserForm = ({ selectedUser = null }) => {
                                 </Select>
                             )}
                         />
-                        {
-                            errors.city && <span className='text-xs text-red-600'>City is required</span>
-                        }
+                        {errors.city && <span className='text-xs text-red-600'>{errors.city.message}</span>} {/* Display error */}
                     </span>
 
+                    {/* State Select */}
                     <span className='w-full'>
                         <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="state">State</label>
                         <Controller
                             name='state'
                             control={control}
+                            rules={{ required: 'State is required' }}
                             render={({ field }) => (
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <SelectTrigger className="w-full border-white-600 text-white-400">
@@ -217,18 +226,17 @@ const UserForm = ({ selectedUser = null }) => {
                                 </Select>
                             )}
                         />
-                        {
-                            errors.state && <span className='text-xs text-red-600'>State is required</span>
-                        }
+                        {errors.state && <span className='text-xs text-red-600'>{errors.state.message}</span>} {/* Display error */}
                     </span>
-
                 </div>
 
+                {/* Country Select */}
                 <div className='min-w-[200px]'>
                     <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="country">Country</label>
                     <Controller
                         name='country'
                         control={control}
+                        rules={{ required: 'Country is required' }}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} value={field.value}>
                                 <SelectTrigger className="w-full border-white-600 text-white-400">
@@ -240,9 +248,7 @@ const UserForm = ({ selectedUser = null }) => {
                             </Select>
                         )}
                     />
-                    {
-                        errors.country && <span className='text-xs text-red-600'>Country is required</span>
-                    }
+                    {errors.country && <span className='text-xs text-red-600'>{errors.country.message}</span>} {/* Display error */}
                 </div>
 
             </div>

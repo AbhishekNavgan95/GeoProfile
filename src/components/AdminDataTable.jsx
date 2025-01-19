@@ -1,4 +1,4 @@
-import { getUsers } from '@/config/Appwrite'
+import { deleteUser, getUsers } from '@/config/Appwrite'
 import { useloadingProgress } from '@/stores/loadingProgressStore'
 import { useloadingStore } from '@/stores/loadingStore'
 import React, { useEffect, useState } from 'react'
@@ -33,8 +33,8 @@ const AdminDataTable = () => {
 
     const handleDeleteUser = async (user) => {
         setLoadingProgress(40)
-        await deleteUser(user)
 
+        await deleteUser(user)
         setUsers(prev => prev.filter((u) => u?.$id !== user?.$id))
 
         setLoadingProgress(100)

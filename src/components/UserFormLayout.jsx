@@ -13,6 +13,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import UserForm from './form/UserForm';
+import { useNavigate } from 'react-router-dom';
 
 const UserFormLayout = () => {
 
@@ -20,6 +21,7 @@ const UserFormLayout = () => {
     const [users, setUsers] = useState([]);
     const { setLoadingProgress } = useloadingProgress();
     const [selectedUser, setSelectedUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
