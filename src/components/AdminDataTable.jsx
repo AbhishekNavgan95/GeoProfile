@@ -15,6 +15,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { cities } from '@/data/staticData'
+import { useNavigate } from 'react-router-dom'
+import { FaArrowLeft } from 'react-icons/fa'
 
 const AdminDataTable = () => {
 
@@ -22,8 +24,25 @@ const AdminDataTable = () => {
     const { loading, setLoading } = useloadingStore();
     const { progress, setLoadingProgress } = useloadingProgress();
     const [filters, setFilters] = useState({ sort: 'asc' });
+    const navigate = useNavigate();
 
-    console.log("filters: ", filters)
+    const handleLogout = () => {
+        localStorage.removeItem('securityKey')
+        navigate('/')
+    }
+
+    const handleDeleteUser = async (user) => {
+        setLoadingProgress(40)
+        await deleteUser(user)
+
+        setUsers(prev => prev.filter((u) => u?.$id !== user?.$id))
+
+        setLoadingProgress(100)
+    }
+
+    const handleUserUpdate = (user) => {
+        console.log("user to be updaetd : ", user)
+    }
 
     useEffect(() => {
 
@@ -45,13 +64,13 @@ const AdminDataTable = () => {
     return (
         <div className='p-3 md:p-10 w-full h-full'>
             <div className='my-10'>
+                <button onClick={() => navigate('/')} className=' flex items-center gap-3 mb-3  hover:gap-5 transition-gap duration-300'>
+                    <FaArrowLeft /> Home
+                </button>
                 <p className='text-green-500 mb-1'>Welcome Back!</p>
                 <h2 className='text-4xl font-semibold  text-center md:text-start'>
                     User Management
                 </h2>
-                <p className='text-lg  mt-2 font-light text-center md:text-start'>
-                    Effortlessly create, update, or remove users.
-                </p>
             </div>
 
             <div className=' w-full flex-1 flex flex-col gap-3'>
@@ -100,11 +119,11 @@ const AdminDataTable = () => {
                         <div className='flex w-full items-center justify-center min-h-[700px]'>
                             <p>No data found...</p>
                         </div>
-                    ) : (<DataTable users={users} />)
+                    ) : (<DataTable users={users} handleUserUpdate={handleUserUpdate} handleDeleteUser={handleDeleteUser} />)
                 }
             </div>
             <div className='flex flex-col items-end'>
-                <Button variant='destructive' className='mt-4'>Logout</Button>
+                <Button onClick={handleLogout} variant='destructive' className='mt-4'>Logout</Button>
             </div>
         </div >
     )

@@ -18,15 +18,18 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { deleteUser } from "@/config/Appwrite"
+import { useloadingStore } from "@/stores/loadingStore"
+import { useloadingProgress } from "@/stores/loadingProgressStore"
 
-const DataTable = ({ users = [] }) => {
+const DataTable = ({ users = [], handleDeleteUser = () => {}, handleUserUpdate= () => {} }) => {
 
-    const handleUpdate = (user) => {
-        console.log("update this user : ", user)
-    }
+    const { setLoadingProgress } = useloadingProgress()
+
+
 
     return (
-        <div className="overflow-x-auto border border-black-600">
+        <div className="overflow-x-auto border border-black-600 rounded-lg">
             <table className="min-w-full h-full bg-white">
 
                 <thead className="whitespace-nowrap bg-white-200">
@@ -58,7 +61,7 @@ const DataTable = ({ users = [] }) => {
                             <tr key={user?.$id} className="odd:bg-white-900 border-b border-black-600">
                                 <td className="p-4 text-sm text-black ">
                                     <div className=' flex gap-2 items-center'>
-                                        <img className='w-8 rounded-full' src={user?.image} alt={user?.name} />
+                                        <img className='w-8 rounded-full' loading='lazy' src={user?.image} alt={user?.name} />
                                         {
                                             user?.name
                                         }
@@ -94,12 +97,10 @@ const DataTable = ({ users = [] }) => {
                                             <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
                                         </Button>
                                         <DropdownMenuContent className='flex flex-col gap-2 p-2'>
-                                            <button onClick={() => handleUpdate(user)}>Update</button>
+                                            <button onClick={() => handleUserUpdate(user)}>Update</button>
                                             <AlertDialog className='flex flex-col p-2'>
                                                 <AlertDialogTrigger>
-                                                    <button>
-                                                        Delete
-                                                    </button>
+                                                    Delete
                                                 </AlertDialogTrigger>
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>
@@ -110,7 +111,9 @@ const DataTable = ({ users = [] }) => {
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                        <Button>Continue</Button>
+                                                        <AlertDialogAction>
+                                                            <Button onClick={() => handleDeleteUser(user)}>Continue</Button>
+                                                        </AlertDialogAction>
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
                                             </AlertDialog>

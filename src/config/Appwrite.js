@@ -38,17 +38,17 @@ export const createUsers = async (documents = []) => {
 // todo inset logic to upload file and insert document
 export const createUser = async (doc = {}) => {
   try {
-    const fileResponse = await uploadFile(doc.file);
-
+    const fileResponse = await uploadFile(doc?.file);
+    console.log("file response : ", fileResponse)
     doc.file = fileResponse["$id"];
 
-    const response = await databases.createDocument(
-      import.meta.env.VITE_DATABASE_ID, // Database ID
-      import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
-      "unique()", // Generate unique document IDs
-      doc
-    );
-    console.log("Document inserted:", response);
+    // const response = await databases.createDocument(
+    //   import.meta.env.VITE_DATABASE_ID, // Database ID
+    //   import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
+    //   "unique()", // Generate unique document IDs
+    //   doc
+    // );
+    // console.log("Document inserted:", response);
   } catch (e) {
     console.error("Error while inserting documeent", doc);
   }
@@ -75,8 +75,10 @@ export const deleteUser = async (doc = {}) => {
       import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
       doc.$id // Document ID
     );
+    toast.success("User deleted successfully");
     console.log("Document deleted:", response);
   } catch (e) {
+    toast.error("Something went wrong ☹️");
     console.error("Error while deleting document : ", e);
   }
 };

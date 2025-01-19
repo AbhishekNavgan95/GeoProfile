@@ -36,9 +36,7 @@ const Navbar = ({ style }) => {
                 </Link>
 
                 {/* Admin dashboard button */}
-                <Dialog onClick={() => console.log("redirect to admin dashboard")}>
-
-                </Dialog>
+                <Dialog />
             </nav>
         </>
     )
@@ -56,7 +54,7 @@ const Dialog = () => {
 
         if (storedKey === passkey) {
             setIsKeyValid(true);
-            navigate('/target-url'); // Replace '/target-url' with the desired URL
+            navigate('/admin')
         }
     }, [navigate]);
 
@@ -72,7 +70,7 @@ const Dialog = () => {
 
     if (isKeyValid) return (
         <>
-            <button onClick={() => navigate('/admin')} className=''>
+            <button onClick={() => navigate('/admin')} className='text-xl'>
                 <RiAdminLine />
             </button>
         </>
@@ -80,7 +78,7 @@ const Dialog = () => {
 
     return (
         <AlertDialog>
-            <AlertDialogTrigger>
+            <AlertDialogTrigger className='text-xl'>
                 <RiAdminLine />
             </AlertDialogTrigger>
             <AlertDialogContent>
