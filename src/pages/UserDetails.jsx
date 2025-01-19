@@ -54,7 +54,7 @@ const UserDetails = () => {
     }
 
     return (
-        <section className='w-full h-auto md:min-h-screen bg-black-700 flex flex-col justify-start'>
+        <section className='w-full h-auto min-h-screen bg-black-700 flex flex-col justify-start'>
             <Navbar style="w-full md:w-[800px] mx-auto text-white-200 my-5" />
             <div className='flex flex-col flex-1 items-center justify-center h-full'>
                 <div className='border-4 border-white-500 bg-white-700 my-5 p-5 rounded-lg flex flex-col items-center gap-5 w-[350px] md:w-[400px] shadow-lg shadow-black-900'>
