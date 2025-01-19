@@ -64,10 +64,10 @@ const AdminDataTable = () => {
     return (
         <div className='p-3 md:p-10 w-full h-full'>
             <div className='my-10'>
-                <button onClick={() => navigate('/')} className=' flex items-center gap-3 mb-3  hover:gap-5 transition-gap duration-300'>
+                <button onClick={() => navigate('/')} className=' flex items-center justify-center md:justify-start w-full gap-3 mb-3  hover:gap-5 transition-gap duration-300'>
                     <FaArrowLeft /> Home
                 </button>
-                <p className='text-green-500 mb-1'>Welcome Back!</p>
+                <p className='text-green-500 mb-1 text-center md:text-start'>Welcome Back!</p>
                 <h2 className='text-4xl font-semibold  text-center md:text-start'>
                     User Management
                 </h2>
@@ -107,7 +107,7 @@ const AdminDataTable = () => {
                         </Select>
                     </div>
 
-                    <Button className=''>Add a new user</Button>
+                    <Button onClick={() => navigate('/admin/form')} className=''>Add a new user</Button>
 
                 </div>
                 {
