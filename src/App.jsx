@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import UserDetails from "./pages/UserDetails";
 import LoadingBar from "react-top-loading-bar";
 import { useloadingProgress } from "./stores/loadingProgressStore";
+import Admin from "./pages/Admin";
 
 const App = () => {
 
@@ -19,7 +20,7 @@ const App = () => {
       />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<RenderMap />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/user/:id">
           <Route index element={<UserDetails />} />
           <Route path="map" element={<RenderMap />} />

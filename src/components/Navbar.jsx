@@ -1,7 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../assets/logo/logo.jpg'
 import { RiAdminLine } from "react-icons/ri";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { Button } from './ui/button';
 
 const Navbar = ({ style }) => {
     return (
@@ -17,12 +36,89 @@ const Navbar = ({ style }) => {
                 </Link>
 
                 {/* Admin dashboard button */}
-                <button onClick={() => console.log("redirect to admin dashboard")} className='text-2xl p-1'>
-                    <RiAdminLine />
-                </button>
+                <Dialog onClick={() => console.log("redirect to admin dashboard")}>
+
+                </Dialog>
             </nav>
         </>
     )
 }
+
+const Dialog = () => {
+    const [value, setValue] = useState('');
+    const [isKeyValid, setIsKeyValid] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedKey = localStorage.getItem('securityKey') || '';
+        const passkey = import.meta.env.VITE_PASSKEY;
+
+        if (storedKey === passkey) {
+            setIsKeyValid(true);
+            navigate('/target-url'); // Replace '/target-url' with the desired URL
+        }
+    }, [navigate]);
+
+    const handleContinue = () => {
+        const passkey = import.meta.env.VITE_PASSKEY;
+        if (value === passkey) {
+            localStorage.setItem('securityKey', value);
+            navigate('/admin');
+        } else {
+            setError('Invalid Passkey')
+        }
+    };
+
+    if (isKeyValid) return (
+        <>
+            <button onClick={() => navigate('/admin')} className=''>
+                <RiAdminLine />
+            </button>
+        </>
+    );
+
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger>
+                <RiAdminLine />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Please enter security pin.</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Try '123456', might work if you are lucky today.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <div className="flex flex-col gap-1 items-center justify-center">
+                    {
+                        error && <p className='text-xs text-red-800'>Invalid Passkey!</p>
+                    }
+                    <InputOTP
+                        maxLength={6}
+                        pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                        value={value}
+                        onChange={(value) => setValue(value)}
+                    >
+                        <InputOTPGroup>
+                            <InputOTPSlot index={0} />
+                            <InputOTPSlot index={1} />
+                            <InputOTPSlot index={2} />
+                            <InputOTPSlot index={3} />
+                            <InputOTPSlot index={4} />
+                            <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                    </InputOTP>
+                </div>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <Button onClick={handleContinue}>
+                        Continue
+                    </Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
+};
 
 export default Navbar
