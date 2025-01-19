@@ -40,10 +40,6 @@ const AdminDashboard = () => {
         setLoadingProgress(100)
     }
 
-    const handleUserUpdate = (user) => {
-        console.log("user to be updaetd : ", user)
-    }
-
     useEffect(() => {
 
         const fetchUsers = async () => {
@@ -119,7 +115,7 @@ const AdminDashboard = () => {
                         <div className='flex w-full items-center justify-center min-h-[700px]'>
                             <p>No data found...</p>
                         </div>
-                    ) : (<DataTable users={users} handleUserUpdate={handleUserUpdate} handleDeleteUser={handleDeleteUser} />)
+                    ) : (<DataTable users={users} handleDeleteUser={handleDeleteUser} />)
                 }
             </div>
             <div className='flex flex-col items-end'>

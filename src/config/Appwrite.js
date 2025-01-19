@@ -50,7 +50,7 @@ export const updateUser = async (doc = {}) => {
       doc.$id, // Document ID
       doc
     );
-    console.log("Document updated:", response);
+    // console.log("Document updated:", response);
     toast.success("User updated successfully");
     return response;
   } catch (e) {
@@ -70,7 +70,7 @@ export const deleteUser = async (doc = {}) => {
       doc.$id // Document ID
     );
     toast.success("User deleted successfully");
-    console.log("Document deleted:", response);
+    // console.log("Document deleted:", response);
   } catch (e) {
     toast.error("Something went wrong ☹️");
     console.error("Error while deleting document : ", e);
@@ -102,7 +102,7 @@ export const getUsers = async (filters) => {
       query
     );
 
-    console.log("Documents fetched:", response);
+    // console.log("Documents fetched:", response);
     return response;
   } catch (e) {
     toast.error("Something went wrong ☹️");
@@ -121,7 +121,7 @@ export const getUser = async (id) => {
       import.meta.env.VITE_USER_COLLECTION_ID,
       id
     );
-    console.log("Document fetched:", response);
+    // console.log("Document fetched:", response);
     return response;
   } catch (e) {
     toast.error("Something went wrong ☹️");

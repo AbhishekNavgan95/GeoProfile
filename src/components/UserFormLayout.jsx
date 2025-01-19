@@ -37,7 +37,7 @@ const UserFormLayout = () => {
     }, [])
 
     return (
-        <div className='py-10 md:py-24 p-3 md:px-10 w-full xl:w-[85%] mx-auto h-full bg-black-700'>
+        <div className='py-10 md:py-24 p-3 md:px-10 w-full xl:w-[85%] mx-auto bg-black-700'>
             <div>
                 <button onClick={() => navigate(-1)} className=' flex items-center justify-center md:justify-start w-full gap-3 mb-3 text-green-600 hover:gap-5 transition-gap duration-300'>
                     <FaArrowLeft /> Back

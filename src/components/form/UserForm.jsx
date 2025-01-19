@@ -11,11 +11,12 @@ import { Button } from '../../components/ui/button'; import {
     SelectValue,
 } from "@/components/ui/select"
 import { Controller, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { createUser, updateUser } from '@/config/Appwrite';
 import { useNavigate } from 'react-router-dom';
 import { useloadingProgress } from '@/stores/loadingProgressStore';
 import { useloadingStore } from '@/stores/loadingStore';
+import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
 
 const UserForm = ({ selectedUser = null }) => {
     const { setLoadingProgress } = useloadingProgress();
@@ -78,7 +79,7 @@ const UserForm = ({ selectedUser = null }) => {
     }
 
     return (
-        <form className=' flex gap-y-5 flex-col' onSubmit={handleSubmit(submitHandler)}>
+        <form className=' flex gap-y-5 flex-col min-h-screen' onSubmit={handleSubmit(submitHandler)}>
 
             {/* name and email */}
             <div className='flex gap-y-3 gap-x-5'>
@@ -205,6 +206,11 @@ const UserForm = ({ selectedUser = null }) => {
                 </span>
             </div>
 
+            <SelectMap 
+                setValue={setValue}
+                marker={selectedUser && {lng: Number(selectedUser?.lng), lat: Number(selectedUser?.lat)}}
+             />
+
             {/* select boxes */}
             <div className='flex flex-col md:flex-row gap-y-3 gap-x-5'>
                 <div className='flex gap-y-3 gap-x-5 w-full'>
@@ -283,9 +289,49 @@ const UserForm = ({ selectedUser = null }) => {
             </div>
 
             <div className='w-full'>
-                <Button disabled={loading} type='submit' className='w-full'>Submit</Button>
+                <Button disabled={loading} type='submit' className='w-full'>{selectedUser ? 'Update' : 'Create'}</Button>
             </div>
         </form>
+    )
+}
+
+const SelectMap = ({ setValue, marker}) => {
+    const defaultCenter = { lat: 18.481297739031266, lng: 74.02868790131127 }
+    const [selectedLocation, setSelectedLocation] = useState(defaultCenter);
+
+    const handleMapClick = (event) => {
+        const lat = event.detail.latLng.lat;
+        const lng = event.detail.latLng.lng;
+
+        setSelectedLocation({ lat, lng });
+    };
+
+    useEffect(() => {
+        setValue('lat', String(selectedLocation?.lat));
+        setValue('lng', String(selectedLocation?.lng));
+    }, [selectedLocation])
+
+    useEffect(() => {
+        if (marker) {
+            setSelectedLocation(marker)
+        }
+    }, [marker])
+
+    return (
+        <APIProvider
+            apiKey={import.meta.env.VITE_MAP_API}
+        >
+            <div className='w-full h-[250px] md:h-[400px]'>
+                <Map
+                    mapContainerStyle={{ width: "100%", height: "400px" }}
+                    defaultCenter={defaultCenter}
+                    defaultZoom={9}
+                    onClick={handleMapClick}
+                >
+                    {selectedLocation && <Marker position={selectedLocation} />}
+                </Map>
+            </div>
+        </APIProvider>
     )
 }
 

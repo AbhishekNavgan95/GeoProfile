@@ -4,7 +4,7 @@ import UserFormLayout from '@/components/UserFormLayout'
 
 const FormPage = () => {
   return (
-    <section className='relative grid grid-cols-3 items-center text-white-200 min-h-screen'>
+    <section className='relative grid grid-cols-3 items-start text-white-200 h-auto bg-black-700'>
       <div className='w-full col-span-3 lg:col-span-2'>
         <UserFormLayout />
       </div>
