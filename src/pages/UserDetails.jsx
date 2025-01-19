@@ -7,21 +7,29 @@ import { FaArrowRight } from "react-icons/fa6";
 import { useloadingStore } from '@/stores/loadingStore';
 import Spinner from '@/components/Spinner';
 import Navbar from '@/components/Navbar';
+import { useloadingProgress } from '@/stores/loadingProgressStore';
 
 const UserDetails = () => {
 
     const { id } = useParams();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const { loading, setLoading } = useloadingStore();
     const [readmore, setReadmore] = useState(false);
+    const { setLoadingProgress } = useloadingProgress()
 
     useEffect(() => {
         const fetchUser = async () => {
             setLoading(true)
+            setLoadingProgress(40)
             const response = await getUser(id);
-            setUser(response)
+
+            if (response) {
+                setUser(response)
+            }
+
             setLoading(false)
+            setLoadingProgress(100)
         }
 
         if (id) {
@@ -33,6 +41,14 @@ const UserDetails = () => {
         return (
             <div className='h-screen grid place-items-center'>
                 <Spinner />
+            </div>
+        )
+    }
+
+    if (!user && !loading) {
+        return (
+            <div className='h-screen grid place-items-center text-white-200 text-lg'>
+                No data found...
             </div>
         )
     }

@@ -1,4 +1,5 @@
 import { Client, Databases, Query, Storage } from "appwrite";
+import toast from "react-hot-toast";
 
 const client = new Client()
   .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
@@ -89,7 +90,7 @@ export const getUsers = async (filters) => {
     }
 
     if (filters?.query) {
-        query.push(Query.contains("name", filters.query)); 
+      query.push(Query.contains("name", filters.query));
     }
 
     if (filters?.sort === "asc") {
@@ -107,22 +108,25 @@ export const getUsers = async (filters) => {
     console.log("Documents fetched:", response);
     return response;
   } catch (e) {
+    toast.error("Something went wrong ☹️");
     console.error("Error while fetching documents: ", e);
+    return e;
   }
 };
 
 export const getUser = async (id) => {
   try {
-    if(!id) return null;
-    
+    if (!id) return null;
+
     const response = await databases.getDocument(
-      import.meta.env.VITE_DATABASE_ID, 
-      import.meta.env.VITE_USER_COLLECTION_ID, 
-      id 
+      import.meta.env.VITE_DATABASE_ID,
+      import.meta.env.VITE_USER_COLLECTION_ID,
+      id
     );
     console.log("Document fetched:", response);
     return response;
   } catch (e) {
+    toast.error("Something went wrong ☹️");
     console.error("Error while fetching document : ", e);
   }
 };

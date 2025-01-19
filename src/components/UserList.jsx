@@ -6,25 +6,35 @@ import { useSearchParams } from 'react-router-dom';
 import { useloadingStore } from '@/stores/loadingStore';
 import { useUserStore } from '@/stores/userStore';
 import Spinner from './Spinner';
+import { useloadingProgress } from '@/stores/loadingProgressStore';
+import toast from 'react-hot-toast';
 
 const UserList = () => {
 
-    const { users , setUsers: setStoreUsers } = useUserStore();
+    const { users, setUsers: setStoreUsers } = useUserStore();
     const { setCurrentUser, currentUser } = useCurrentUser();
     const { loading, setLoading } = useloadingStore();
     const [searchParams, setSearchParams] = useSearchParams();
+    const { setLoadingProgress } = useloadingProgress()
+
+    // console.log("users : ", users)
 
     useEffect(() => {
         const fetchUsers = async () => {
             setLoading(true)
+            setLoadingProgress(40)
             const response = await getUsers({ query: searchParams.get('slug'), city: searchParams.get('city'), sort: searchParams.get('sort') });
-            setStoreUsers(response?.documents)
+
+            if (response?.documents) {
+                setStoreUsers(response?.documents)
+            }
 
             if (response?.documents?.length > 0) {
                 setCurrentUser(response?.documents[0])
             }
 
-            setLoading(false) 
+            setLoadingProgress(100)
+            setLoading(false)
         }
 
         fetchUsers();

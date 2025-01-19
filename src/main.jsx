@@ -4,9 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import { Browser } from 'appwrite'
 import { BrowserRouter } from 'react-router-dom'
+import { LoadingBarContainer } from "react-top-loading-bar";
+import { Toaster } from 'react-hot-toast'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <App />
+    <LoadingBarContainer>
+      <Toaster />
+      <App />
+    </LoadingBarContainer>
   </BrowserRouter>
 )
