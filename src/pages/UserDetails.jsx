@@ -6,13 +6,15 @@ import { Button } from '@/components/ui/button';
 import { FaArrowRight } from "react-icons/fa6";
 import { useloadingStore } from '@/stores/loadingStore';
 import Spinner from '@/components/Spinner';
+import Navbar from '@/components/Navbar';
 
 const UserDetails = () => {
 
     const { id } = useParams();
     const [user, setUser] = useState({});
     const navigate = useNavigate();
-    const {loading, setLoading} = useloadingStore();
+    const { loading, setLoading } = useloadingStore();
+    const [readmore, setReadmore] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -27,7 +29,7 @@ const UserDetails = () => {
         }
     }, [id])
 
-    if(loading) {
+    if (loading) {
         return (
             <div className='h-screen grid place-items-center'>
                 <Spinner />
@@ -36,30 +38,41 @@ const UserDetails = () => {
     }
 
     return (
-        <section className='relative w-full h-screen bg-black-700 grid place-items-center'>
-            <Button onClick={() => navigate('/')} className='absolute top-0 left-0 m-4 flex gap-1 hover:gap-3 transition-all duration-200' variant='secondary'> <FaArrowRight className='rotate-180' /> Home</Button>
+        <section className='w-full h-auto md:min-h-screen bg-black-700 flex flex-col justify-start'>
+            <Navbar style="w-full md:w-[800px] mx-auto text-white-200 my-5" />
+            <div className='flex flex-col flex-1 items-center justify-center h-full'>
+                <div className='border-4 border-white-500 bg-white-700 my-5 p-5 rounded-lg flex flex-col items-center gap-5 w-[350px] md:w-[400px] shadow-lg shadow-black-900'>
+                    <img loading='lazy' src={user?.image} className='border-4 border-white-200 rounded-full overflow-hidden h-[150px] min-w-[150px] aspect-square' alt="" />
+                    <span className='text-white-200 w-full'>
+                        <h1 className='text-3xl font-semibold text-white-200 text-center'>{user?.name}</h1>
 
-            <div className='bg-white-700 p-5 rounded-lg flex justify-center items-start gap-5 max-w-[700px] shadow-lg shadow-black-900'>
-                <img loading='lazy' src={user?.image} className='border-2 border-white-200 rounded-full overflow-hidden h-[200px] min-w-[200px] aspect-square' alt="" />
-                <span className='text-white-200'>
+                        <hr className='w-full my-5 border border-white-500' />
 
-                    <h1 className='text-4xl font-bold text-white-200'>{user?.name}</h1>
+                        <div className='my-2 flex flex-col items-start gap-2'>
+                            <h2 className='text-sm flex items-center gap-2'><span className='text-green-500 font-semibold  text-lg'><MdOutlineEmail /></span>  {user?.email}</h2>
+                            <h3 className='text-sm flex items-center gap-2'><span className='text-green-500 font-semibold  text-lg'><MdOutlineLocationCity /></span>  {user?.city}, {user?.state}</h3>
+                            <h3 className='text-sm flex items-center gap-2'><span className='text-green-500 font-semibold  text-lg'><MdPhone /></span>  {user?.contact_no}</h3>
+                        </div>
 
-                    <div className='my-2'>
-                        <h2 className='mt-1 text-sm flex items-center gap-2'><MdOutlineEmail />  {user?.email}</h2>
-                        <h3 className='mt-1 text-sm flex items-center gap-2'><MdOutlineLocationCity />  {user?.city}, {user?.state}</h3>
-                        <h3 className='mt-1 text-sm flex items-center gap-2'><MdPhone />  {user?.contact_no}</h3>
-                    </div>
+                        <hr className='w-full my-5 border border-white-500' />
 
-                    <div>
-                        <p className='flex items-center gap-1 my-4'><span className='font-semibold'>Intrests:</span>  {user?.interests}</p>
-                        <p className='text-lg text-white-300'>
-                            {user?.description}
-                        </p>
-                    </div>
+                        <p className='flex items-start gap-1 my-4'><span className='font-semibold text-green-500'>Intrests:</span>  {user?.interests}.</p>
 
-                    <Button onClick={() => navigate('map')} className='mt-4 flex gap-1 hover:gap-3 transition-all duration-200'>View on map <FaArrowRight /></Button>
-                </span>
+                        <hr className='w-full my-5 border border-white-500' />
+
+                        <div className='flex flex-col items-start'>
+                            <p className={`text-lg text-white-300 ${user?.description?.length > 100 ? readmore ? 'line-clamp-none' : 'line-clamp-6' : ''}`}>
+                                {user?.description}
+                            </p>
+                            {user?.description?.length > 100 && (<button className='self-end mt-2 ' onClick={() => setReadmore((prev) => !prev)}>{!readmore ? 'show more' : 'show less'}</button>)}
+                        </div>
+
+                        <span className='flex items-center justify-between mt-4'>
+                            <button onClick={() => navigate('/')} className='flex gap-1 hover:gap-3 transition-all duration-200' variant='secondary'> <FaArrowRight className='rotate-180' /></button>
+                            <button onClick={() => navigate('map')} className='self-end text-green-500 font-semibold'>View on map</button>
+                        </span>
+                    </span>
+                </div>
             </div>
         </section>
     )

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import logo from '../assets/logo/logo.jpg'
-import { RiAdminLine } from "react-icons/ri";
 import { Input } from './ui/input';
 import UserList from './UserList';
 import { useUserStore } from '@/stores/userStore';
@@ -17,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cities } from '@/data/staticData';
+import Navbar from './Navbar';
 
 const Sidebar = () => {
 
@@ -60,19 +59,7 @@ const Sidebar = () => {
   return (
     <section className='h-screen text-white-300 py-5 flex flex-col '>
 
-      {/* nav */}
-      <nav className='flex justify-between items-center px-5  min-w-[350px]'>
-        {/* logo */}
-        <span className='flex items-center justify-center gap-2'>
-          <img loading='lazy' className='max-w-[35px] rounded-full' src={logo} alt="" />
-          <h1 className='font-semibold text-4xl'>GeoProfile</h1>
-        </span>
-
-        {/* Admin dashboard button */}
-        <button onClick={() => console.log("redirect to admin dashboard")} className='text-2xl p-1'>
-          <RiAdminLine />
-        </button>
-      </nav>
+      <Navbar />
 
       {/* search */}
       <div className=' mt-3 px-5 min-w-[350px] flex flex-col'>
