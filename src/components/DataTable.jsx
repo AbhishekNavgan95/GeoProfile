@@ -92,7 +92,7 @@ const DataTable = ({ users = [], handleDeleteUser = () => { }}) => {
 
                                 <td className="p-4 text-sm text-black m-1">
                                     <DropdownMenu>
-                                        <Button size='sm' className='h-6'>
+                                        <Button size='sm' className=''>
                                             <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
                                         </Button>
                                         <DropdownMenuContent className='flex flex-col gap-2 p-2'>

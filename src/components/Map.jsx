@@ -83,7 +83,7 @@ const RenderMap = () => {
         return (
             <div className='h-screen grid place-items-center text-white-200 text-lg'>
                 No data found...
-                <Button onClick={() => navigate(-1)} size='default' className="absolute bottom-0 left-0 z-[2] m-5 md:hidden">
+                <Button onClick={() => navigate(-1)} size='default' className="absolute bottom-0 left-0 z-[2] m-5">
                     <FaArrowLeft /> Back
                 </Button>
             </div>
@@ -92,7 +92,7 @@ const RenderMap = () => {
 
     return (
         <section className="h-screen relative p-2 w-full">
-            <Button onClick={() => navigate(-1)} size='default' className="absolute bottom-0 left-0 z-[2] m-5 md:hidden">
+            <Button onClick={() => navigate(-1)} size='default' className="absolute bottom-0 left-0 z-[4] m-5">
                 <FaArrowLeft /> Back
             </Button>
             <APIProvider
