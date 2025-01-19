@@ -1,9 +1,6 @@
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from './ui/button'
@@ -18,9 +15,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { deleteUser } from "@/config/Appwrite"
-import { useloadingStore } from "@/stores/loadingStore"
-import { useloadingProgress } from "@/stores/loadingProgressStore"
 import { useNavigate } from "react-router-dom"
 
 const DataTable = ({ users = [], handleDeleteUser = () => { }}) => {
@@ -59,16 +53,16 @@ const DataTable = ({ users = [], handleDeleteUser = () => { }}) => {
                         users.map((user) => (
                             <tr key={user?.$id} className="odd:bg-white-900 border-b border-black-600">
                                 
-                                <td className="p-4 text-sm text-black ">
+                                <td className="p-4 text-sm text-black  m-1">
                                     <div className=' flex gap-2 items-center'>
-                                        <img className='w-8 rounded-full' loading='lazy' src={user?.image} alt={user?.name} />
+                                        <img className='w-8 min-h-8 rounded-full' loading='lazy' src={user?.image} alt={user?.name} />
                                         {
                                             user?.name
                                         }
                                     </div>
                                 </td>
 
-                                <td className="p-4 text-sm text-black ">
+                                <td className="p-4 text-sm text-black  m-1">
                                     <a className='hover:underline' href={`mailto:${user?.email}`}>
                                         {
                                             user?.email
@@ -76,7 +70,7 @@ const DataTable = ({ users = [], handleDeleteUser = () => { }}) => {
                                     </a>
                                 </td>
 
-                                <td className="p-4 text-sm text-black">
+                                <td className="p-4 text-sm text-black m-1">
                                     <a className='hover:underline' href={`tel:${user?.phone}`}>
                                         {
                                             user?.contact_no
@@ -84,24 +78,25 @@ const DataTable = ({ users = [], handleDeleteUser = () => { }}) => {
                                     </a>
                                 </td>
 
-                                <td className="p-4 text-sm text-black">
+                                <td className="p-4 text-sm text-black m-1">
                                     <div className=''>
                                         {user?.city}, {user?.state}, {user?.country}
                                     </div>
                                 </td>
 
-                                <td className="p-4 text-sm text-black">
+                                <td className="p-4 text-sm text-black m-1">
                                     <div className=''>
                                         {user?.interests}
                                     </div>
                                 </td>
 
-                                <td className="p-4 text-sm text-black">
+                                <td className="p-4 text-sm text-black m-1">
                                     <DropdownMenu>
                                         <Button size='sm' className='h-6'>
                                             <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
                                         </Button>
                                         <DropdownMenuContent className='flex flex-col gap-2 p-2'>
+                                            <button onClick={() => navigate(`/user/${user?.$id}/map`)}>View on map</button>
                                             <button onClick={() => navigate('form')}>Update</button>
                                             <AlertDialog className='flex flex-col p-2'>
                                                 <AlertDialogTrigger>

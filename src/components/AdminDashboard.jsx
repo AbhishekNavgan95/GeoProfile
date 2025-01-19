@@ -4,7 +4,7 @@ import { useloadingStore } from '@/stores/loadingStore'
 import React, { useEffect, useState } from 'react'
 import Spinner from './Spinner'
 import { Button } from './ui/button'
-import DataTable from '../components/DataTable'
+import DataTable from './DataTable'
 import {
     Select,
     SelectContent,
@@ -18,7 +18,7 @@ import { cities } from '@/data/staticData'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowLeft } from 'react-icons/fa'
 
-const AdminDataTable = () => {
+const AdminDashboard = () => {
 
     const [users, setUsers] = useState([])
     const { loading, setLoading } = useloadingStore();
@@ -130,4 +130,4 @@ const AdminDataTable = () => {
 }
 
 
-export default AdminDataTable
+export default AdminDashboard

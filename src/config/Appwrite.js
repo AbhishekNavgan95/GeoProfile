@@ -8,53 +8,41 @@ const client = new Client()
 const databases = new Databases(client);
 const storage = new Storage(client);
 
-export const uploadFile = async (file) => {
-  try {
-    const response = await storage.createFile(file);
-    console.log("File uploaded:", response);
-    return response;
-  } catch (error) {
-    console.error("Error uploading file:", error);
-  }
-};
-
-// todo inset logic to upload file and insert document
-export const createUsers = async (documents = []) => {
-  for (const doc of documents) {
-    try {
-      const response = await databases.createDocument(
-        import.meta.env.VITE_DATABASE_ID, // Database ID
-        import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
-        "unique()", // Generate unique document IDs
-        doc
-      );
-      console.log("Document inserted:", response);
-    } catch (error) {
-      console.error("Error inserting document:", error.message);
-    }
-  }
-};
-
-// todo inset logic to upload file and insert document
+// ✅
 export const createUser = async (doc = {}) => {
+  const loading = toast.loading("Creating user...");
   try {
-    const fileResponse = await uploadFile(doc?.file);
-    console.log("file response : ", fileResponse)
-    doc.file = fileResponse["$id"];
+    const file = doc.image[0];
+    const fileResponse = await storage.createFile(
+      import.meta.env.VITE_BUCKET_ID,
+      'unique()',
+      file
+    );
 
-    // const response = await databases.createDocument(
-    //   import.meta.env.VITE_DATABASE_ID, // Database ID
-    //   import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
-    //   "unique()", // Generate unique document IDs
-    //   doc
-    // );
-    // console.log("Document inserted:", response);
+    const imageURL = `${import.meta.env.VITE_APPWRITE_ENDPOINT}/storage/buckets/${import.meta.env.VITE_BUCKET_ID}/files/${fileResponse.$id}/view?project=${import.meta.env.VITE_APPWRITE_API}&mode=admin`;
+
+    doc.image = imageURL;
+
+    const dbResponse = await databases.createDocument(
+      import.meta.env.VITE_DATABASE_ID, // Database ID
+      import.meta.env.VITE_USER_COLLECTION_ID, // Collection ID
+      "unique()",
+      doc
+    );
+
+    toast.success("User created successfully");
+    return dbResponse;
   } catch (e) {
-    console.error("Error while inserting documeent", doc);
+    toast.error("Something went wrong ☹️");
+    console.error("Error while inserting documeent", e);
+  } finally {
+    toast.dismiss(loading);
   }
 };
 
+// ✅
 export const updateUser = async (doc = {}) => {
+  const loading = toast.loading("Updating user...");
   try {
     const response = await databases.updateDocument(
       import.meta.env.VITE_DATABASE_ID, // Database ID
@@ -63,11 +51,17 @@ export const updateUser = async (doc = {}) => {
       doc
     );
     console.log("Document updated:", response);
+    toast.success("User updated successfully");
+    return response;
   } catch (e) {
     console.error("Error while updating document : ", e);
+    toast.error("Something went wrong while updating the user ☹️");
+  } finally {
+    toast.dismiss(loading);
   }
 };
 
+// ✅
 export const deleteUser = async (doc = {}) => {
   try {
     const response = await databases.deleteDocument(
@@ -83,6 +77,7 @@ export const deleteUser = async (doc = {}) => {
   }
 };
 
+// ✅
 export const getUsers = async (filters) => {
   try {
     const query = [];
@@ -116,6 +111,7 @@ export const getUsers = async (filters) => {
   }
 };
 
+// ✅
 export const getUser = async (id) => {
   try {
     if (!id) return null;

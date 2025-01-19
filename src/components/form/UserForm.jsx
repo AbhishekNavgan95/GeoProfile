@@ -12,11 +12,14 @@ import { Button } from '../../components/ui/button'; import {
 } from "@/components/ui/select"
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import { createUser, updateUser } from '@/config/Appwrite';
 import { useNavigate } from 'react-router-dom';
+import { useloadingProgress } from '@/stores/loadingProgressStore';
+import { useloadingStore } from '@/stores/loadingStore';
 
 const UserForm = ({ selectedUser = null }) => {
-    console.log("selectedUser : ", selectedUser)
-    const navigate = useNavigate();
+    const { setLoadingProgress } = useloadingProgress();
+    const { loading, setLoading } = useloadingStore();
 
     const {
         register,
@@ -27,6 +30,7 @@ const UserForm = ({ selectedUser = null }) => {
         getValues,
         setValue
     } = useForm()
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (selectedUser) {
@@ -44,8 +48,33 @@ const UserForm = ({ selectedUser = null }) => {
         }
     }, [selectedUser])
 
-    const submitHandler = (data) => {
-        console.log("data : ", data)
+    const submitHandler = async (data) => {
+        setLoading(true)
+        const newUser = {
+            ...data,
+            contact_no: data.phone,
+            phone: undefined
+        }
+
+        if (selectedUser) {
+            setLoadingProgress(40)
+            newUser.$id = selectedUser?.$id
+
+            const response = await updateUser(newUser)
+            if (response) {
+                reset()
+                navigate(-1)
+            }
+        } else {
+            setLoadingProgress(40)
+            const response = await createUser(newUser)
+            if (response) {
+                reset()
+                navigate(-1)
+            }
+        }
+        setLoadingProgress(100)
+        setLoading(false)
     }
 
     return (
@@ -148,20 +177,6 @@ const UserForm = ({ selectedUser = null }) => {
             {/* longitude and latitude */}
             <div className='flex gap-y-3 gap-x-5'>
                 <span className='flex flex-col items-start w-full'>
-                    <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="longitude">Longitude</label>
-                    <Input
-                        type="text"
-                        id='longitude'
-                        placeholder='34.691444'
-                        className='w-full placeholder:text-white-400 shadow-sm shadow-black-700 border-black-500'
-                        {...register("lng", { required: true })}
-                    />
-                    {
-                        errors.lng && <span className='text-xs text-red-600'>Longitude is required</span>
-                    }
-                </span>
-
-                <span className='flex flex-col items-start w-full'>
                     <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="latitude">Latitude</label>
                     <Input
                         type="text"
@@ -172,6 +187,20 @@ const UserForm = ({ selectedUser = null }) => {
                     />
                     {
                         errors.lat && <span className='text-xs text-red-600'>Latitude is required</span>
+                    }
+                </span>
+
+                <span className='flex flex-col items-start w-full'>
+                    <label className='text-sm text-white-200 mb-1 font-thin' htmlFor="longitude">Longitude</label>
+                    <Input
+                        type="text"
+                        id='longitude'
+                        placeholder='34.691444'
+                        className='w-full placeholder:text-white-400 shadow-sm shadow-black-700 border-black-500'
+                        {...register("lng", { required: true })}
+                    />
+                    {
+                        errors.lng && <span className='text-xs text-red-600'>Longitude is required</span>
                     }
                 </span>
             </div>
@@ -254,7 +283,7 @@ const UserForm = ({ selectedUser = null }) => {
             </div>
 
             <div className='w-full'>
-                <Button type='submit' className='w-full'>Submit</Button>
+                <Button disabled={loading} type='submit' className='w-full'>Submit</Button>
             </div>
         </form>
     )

@@ -54,9 +54,9 @@ const Dialog = () => {
 
         if (storedKey === passkey) {
             setIsKeyValid(true);
-            navigate('/admin')
+            // navigate('/admin')
         }
-    }, [navigate]);
+    }, []);
 
     const handleContinue = () => {
         const passkey = import.meta.env.VITE_PASSKEY;

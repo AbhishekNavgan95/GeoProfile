@@ -21,14 +21,17 @@ const App = () => {
         onLoaderFinished={() => setLoadingProgress(0)}
       />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin">
-          <Route index element={<Admin />} />
-          <Route path='form' element={<FormPage />} />
-        </Route>
-        <Route path="/user/:id">
-          <Route index element={<UserDetails />} />
-          <Route path="map" element={<RenderMap />} />
+
+        <Route path="/"  >
+          <Route index element={<Home />} />
+          <Route path="admin">
+            <Route index element={<Admin />} />
+            <Route path='form' element={<FormPage />} />
+          </Route>
+          <Route path="user/:id">
+            <Route index element={<UserDetails />} />
+            <Route path="map" element={<RenderMap />} />
+          </Route>
         </Route>
       </Routes>
     </>
